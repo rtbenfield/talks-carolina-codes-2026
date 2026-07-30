@@ -70,7 +70,21 @@ This is where "networking and databases are going serverless" from the abstract 
 
 ## Section 6 — Firecracker demo (4–5 min, time permitting)
 
-Keep the live demo narrow: boot a Firecracker microVM from the CLI, show boot time, show it's a real isolated kernel (uname, process list). Don't try to demo snapshotting live unless you've rehearsed the restore path — that's the part most likely to fail on stage. Record it as backup regardless.
+Live demo centers on the cold-boot vs. snapshot-resume timing gap. Record it as backup regardless — most likely part to fail on stage.
+
+**RF6. Demo app.** TypeScript/Bun HTTP proxy in front of a Firecracker microVM running the Remix v3 demo app unmodified (listens on plain TCP inside the guest — no app-side changes for the VM boundary).
+
+**RF7. Networking.** TAP device, simplest viable setup — static TAP name, one-time host-level iptables NAT rule created by a setup script, not per-request provisioning. Networking is not the focus of the talk; don't over-engineer this.
+
+**RF8. Cold-boot path.** First request to the proxy triggers a cold boot of the microVM (kernel boot + full Remix app startup lifecycle) before the request is proxied through. Deliberately time the *whole* lifecycle, not just kernel boot — the point is showing what snapshot-resume skips, not isolating kernel boot time alone.
+
+**RF9. Snapshot-and-terminate.** After the response drains, the proxy pauses the VM, writes a memory snapshot (mem file + snapshot file) via the Firecracker API, then terminates the Firecracker process. Demo beat: show the process in `top`, then show it gone.
+
+**RF10. Resume path.** Next request boots a new Firecracker process from the snapshot instead of cold-booting (reusing the same TAP device now that the prior process has released it). Time this path the same way as RF8.
+
+**RF11. Timing output.** Proxy prints both timings (cold boot vs. snapshot resume) to its own terminal so the delta is visible without extra tooling.
+
+**RF12. Repeatability.** Proxy purges any existing snapshot/mem file on its own startup, so the cold-boot path can be re-triggered on demand for re-runs.
 
 Repo consideration — since the setup will live in this repo for the audience to try: put it under a `setup/` or `demo/` directory with a self-contained README, pinned Firecracker version, and a kernel/rootfs download script. Don't assume attendees have KVM available (WSL2 without nested virt, corporate laptops) — say that constraint explicitly in the README so people aren't confused when it fails locally.
 
