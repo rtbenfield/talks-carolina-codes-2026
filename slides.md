@@ -1,27 +1,20 @@
 ---
-# try also 'default' to start simple
-theme: default
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
-# some information about your slides (markdown enabled)
-title: Welcome to Slidev
+title: "Micro VMs and Unikernels: The Cloud’s Next Infrastructure Evolution"
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
+  The cloud is always evolving. While some technologies dominate today, new innovations are shaping the next generation of cloud infrastructure. One breakthrough we’ll explore is unikernel-backed micro VMs, enabling stateful serverless workloads without cold starts.
+  
+  In this session, we’ll take a step back to examine how cloud infrastructure has transformed application development and where it’s headed next. With unikernels driving secure, serverless environments that scale to zero, even traditionally complex workloads like databases and networking are going serverless. Join us to prepare for this next wave of computing and unlock its potential when it arrives.
+  
+  This session is designed for an audience familiar with deploying to traditional cloud environments. While focused on infrastructure, there is valuable knowledge for application developers who desire to be on the forefront of new technology. You’ll see examples of this new model deployed in the real-world and learn about the shortcomings it addresses with current norms.
 
-  Learn more at [Sli.dev](https://sli.dev)
-# apply UnoCSS classes to the current slide
-class: text-center
-# https://sli.dev/features/drawing
+theme: default
+duration: 30min
+comark: true
 drawings:
   persist: false
-# slide transition: https://sli.dev/guide/animations.html#slide-transitions
+  
+class: text-center
 transition: slide-left
-# enable Comark Syntax: https://comark.dev/syntax/markdown
-comark: true
-# duration of the presentation
-duration: 30min
 layout: about-me
 ---
 
