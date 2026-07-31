@@ -2,26 +2,39 @@
 title: "Micro VMs and Unikernels: The Cloud’s Next Infrastructure Evolution"
 info: |
   The cloud is always evolving. While some technologies dominate today, new innovations are shaping the next generation of cloud infrastructure. One breakthrough we’ll explore is unikernel-backed micro VMs, enabling stateful serverless workloads without cold starts.
-  
+
   In this session, we’ll take a step back to examine how cloud infrastructure has transformed application development and where it’s headed next. With unikernels driving secure, serverless environments that scale to zero, even traditionally complex workloads like databases and networking are going serverless. Join us to prepare for this next wave of computing and unlock its potential when it arrives.
-  
+
   This session is designed for an audience familiar with deploying to traditional cloud environments. While focused on infrastructure, there is valuable knowledge for application developers who desire to be on the forefront of new technology. You’ll see examples of this new model deployed in the real-world and learn about the shortcomings it addresses with current norms.
 
-theme: default
 duration: 30min
 comark: true
 drawings:
   persist: false
-  
+
+theme: ./theme
 class: text-center
 transition: slide-left
-layout: about-me
+layout: cover
 ---
 
+# microVMs and Unikernels
+
+## The Cloud’s Next Infrastructure Evolution
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
 -->
+
+---
+layout: quote
+---
+
+The big win with serverless is paying only for what you use; the big tradeoff is accepting cold starts, limited control, and potential vendor lock-in.
+
+---
+layout: about-me
+---
 
 ---
 transition: fade-out
