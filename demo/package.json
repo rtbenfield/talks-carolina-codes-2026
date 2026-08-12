@@ -1,0 +1,17 @@
+{
+  "name": "firecracker-snapshot-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup:firecracker": "./scripts/install-firecracker.sh",
+    "setup:kernel": "./scripts/download-kernel.sh",
+    "setup:rootfs": "./scripts/build-rootfs.sh",
+    "setup:network": "./scripts/setup-network.sh",
+    "start": "bun run src/server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "typescript": "^7.0.2"
+  }
+}

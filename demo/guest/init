@@ -1,0 +1,9 @@
+#!/bin/sh
+# PID 1 inside the guest. Networking (eth0) is configured by the kernel via
+# the ip= boot parameter, so all that's left is mounting pseudo-filesystems
+# and starting the workload.
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+ip link set lo up
+
+exec /usr/local/bin/bun /app/server.ts
