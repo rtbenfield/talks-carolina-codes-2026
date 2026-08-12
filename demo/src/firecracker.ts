@@ -9,19 +9,24 @@ export function firecrackerPid(): number | undefined {
   return fc?.pid;
 }
 
+// #region fc-api
 /** Call the Firecracker management API (PUT /boot-source, PATCH /vm, ...). */
 export async function fcApi(method: string, path: string, body?: unknown): Promise<void> {
-  const res = await fetch(`http://localhost${path}`, {
+  const url = new URL(path, "http://localhost")
+  const res = await fetch(url, {
     unix: API_SOCK,
     method,
     headers: { "content-type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   if (!res.ok) {
-    throw new Error(`firecracker API ${method} ${path} → ${res.status}: ${await res.text()}`);
+    const text = await res.text();
+    throw new Error(`firecracker API ${method} ${path} → ${res.status}: ${text}`);
   }
 }
+// #endregion fc-api
 
+// #region spawn
 /** Start a fresh Firecracker process and wait until its API socket answers. */
 export async function spawnFirecracker(): Promise<void> {
   rmSync(API_SOCK, { force: true });
@@ -39,10 +44,11 @@ export async function spawnFirecracker(): Promise<void> {
       return;
     } catch {
       if (Date.now() > deadline) throw new Error("firecracker API socket never came up");
-      await Bun.sleep(10);
+      await Bun.sleep(1);
     }
   }
 }
+// #endregion spawn
 
 export async function killFirecracker(): Promise<void> {
   if (!fc) return;

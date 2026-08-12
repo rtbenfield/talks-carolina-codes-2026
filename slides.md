@@ -39,7 +39,7 @@ The *big win* with serverless is paying only for what you use;
 
 <v-click>
 
-the *tradeoff* is accepting **cold starts**, **limited control**, and potential **vendor lock-in**.
+the *tradeoff* is accepting **cold starts**, **limited control**, and **vendor lock-in**.
 
 </v-click>
 
@@ -96,7 +96,7 @@ layout: two-cols-header
 
 Pepperidge Farm remembers
 
-Manually copy files to a server with scp and rsync
+Manually copy files to a server with scp, rsync, and ftp
 
 ::left::
 
@@ -463,3 +463,101 @@ layout: cover
 ---
 
 # Demo
+
+---
+zoom: 0.8
+---
+
+# The app inside the VM
+
+An ordinary server with in-memory state
+
+<<< @/demo/guest/server.ts ts {all|4-5|15|17-18}
+
+<!--
+Here's the entire workload the demo ran inside the microVM.
+Notice there's no special behavior.
+[click] The two things to keep an eye on: a counter and a boot timestamp, both living in plain process memory — no database, no disk.
+[click] Each request increments the counter.
+[click] And each response reports both. Remember what these did across the kill/resume cycle — we'll come back to them.
+-->
+
+---
+zoom: 0.9
+---
+
+# A VM is just a process
+
+No daemon, just a process
+
+<<< @/demo/src/firecracker.ts#spawn ts {all|4-7|8-9|11-19}
+
+<!--
+This is how every VM in the demo came to exist.
+[click] Bun.spawn on a plain binary. One firecracker process per VM.
+[click] The guest's serial console is just the process's stdout.
+[click] Then poll until the API socket answers. At this point firecracker is running but empty but without a VM definition.
+-->
+
+---
+
+# The control plane is just HTTP
+
+Firecracker is orchestrated over a unix socket
+
+<<< @/demo/src/firecracker.ts#fc-api ts {all|5}
+
+<!--
+Everything the demo did — boot, pause, snapshot, resume — goes through this one function.
+No SDK, no client library. A REST API over a unix socket.
+[click] The only unusual part: fetch pointed at a unix socket instead of a TCP port.
+-->
+
+---
+zoom: 0.9
+---
+
+# Cold boot: a VM from five API calls
+
+<<< @/demo/src/vm.ts#cold-boot ts {all|3|4-5|6-16|17|18|20-22}
+
+<!--
+This is the entire cold-boot path from the demo.
+[click] Spawn the firecracker process. It starts empty, no VM yet.
+[click] Tell it the shape: 1 vCPU, 256 MiB, and which kernel to boot.
+[click] Attach a root disk and a network interface.
+[click] InstanceStart boots the guest kernel.
+[click] Poll the guest's HTTP server until it answers.
+[click] That whole span is the cold-boot number you saw: kernel boot plus app startup.
+-->
+
+---
+zoom: 0.9
+---
+
+# Scale to zero: pause, snapshot, kill
+
+<<< @/demo/src/vm.ts#snapshot-and-stop ts {all|12|13-17|19-21}
+
+<!--
+After the idle timeout, the proxy retires the VM.
+[click] Pause the guest so memory stops changing.
+[click] One API call writes the full VM state and memory to two files on disk.
+[click] Then kill -9 the firecracker process. Nothing is left running. Complete resource cleanup apart from files on disk.
+-->
+
+---
+
+# Resume: memory comes back from disk
+
+The guest never knew it was gone
+
+<<< @/demo/src/vm.ts#resume ts {all|3-11|9-10|12}
+
+<!--
+The next request takes this path instead of the cold boot.
+[click] Spawn a fresh firecracker process and load the snapshot. No kernel boot, no app startup.
+[click] resume_vm: true means the guest continues from the exact instruction it was paused at.
+[click] Same readiness poll as cold start but observed much faster.
+And this is why the counter kept counting and bootedAt never changed: the process didn't restart. Its memory came back from a file.
+-->

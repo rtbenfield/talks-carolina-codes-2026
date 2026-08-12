@@ -58,6 +58,7 @@ export async function shutdownVm(): Promise<void> {
   await killFirecracker();
 }
 
+// #region cold-boot
 async function coldBoot(): Promise<Startup> {
   const t0 = performance.now();
   await spawnFirecracker();
@@ -78,27 +79,32 @@ async function coldBoot(): Promise<Startup> {
   await waitForGuest();
   vmUp = true;
   const ms = performance.now() - t0;
-  lastColdBootMs = ms;
-  console.log(`\n🥶 COLD BOOT  ${ms.toFixed(0)} ms   (spawn firecracker → boot kernel → start bun → HTTP ready)\n`);
+  logColdBoot(ms);
   return { path: "cold-boot", ms };
 }
+// #endregion cold-boot
 
+// #region resume
 async function resumeFromSnapshot(): Promise<Startup> {
   const t0 = performance.now();
   await spawnFirecracker();
   await fcApi("PUT", "/snapshot/load", {
+    // VM state: vCPU registers, device config
     snapshot_path: SNAPSHOT_FILE,
+    // full guest memory, mapped back in
     mem_backend: { backend_type: "File", backend_path: MEM_FILE },
+    // start executing immediately instead of staying paused
     resume_vm: true,
   });
   await waitForGuest();
   vmUp = true;
   const ms = performance.now() - t0;
-  const vs = lastColdBootMs ? `   (cold boot was ${lastColdBootMs.toFixed(0)} ms → ${(lastColdBootMs / ms).toFixed(1)}× faster)` : "";
-  console.log(`\n🔥 RESUME     ${ms.toFixed(0)} ms   (spawn firecracker → restore memory → HTTP ready)${vs}\n`);
+  logResume(ms);
   return { path: "resume", ms };
 }
+// #endregion resume
 
+// #region snapshot-and-stop
 async function snapshotAndStop(): Promise<void> {
   if (!vmUp) return;
   // Flip early so a request racing this snapshot queues a resume behind it
@@ -121,9 +127,26 @@ async function snapshotAndStop(): Promise<void> {
     // snapshot failed — the next request falls back to a cold boot.
     await killFirecracker();
   }
+  logSnapshotStop(pid, performance.now() - t0);
+}
+// #endregion snapshot-and-stop
+
+/** Print the cold-boot time and record it so the resume log can show the speedup. */
+function logColdBoot(ms: number): void {
+  lastColdBootMs = ms;
+  console.log(`\n🥶 COLD BOOT  ${ms.toFixed(0)} ms   (spawn firecracker → boot kernel → start bun → HTTP ready)\n`);
+}
+
+/** Print the resume time next to the last cold-boot time for comparison. */
+function logResume(ms: number): void {
+  const vs = lastColdBootMs ? `   (cold boot was ${lastColdBootMs.toFixed(0)} ms → ${(lastColdBootMs / ms).toFixed(1)}× faster)` : "";
+  console.log(`\n🔥 RESUME     ${ms.toFixed(0)} ms   (spawn firecracker → restore memory → HTTP ready)${vs}\n`);
+}
+
+function logSnapshotStop(pid: number | undefined, ms: number): void {
   console.log(
     `\n💤 idle — VM paused, memory snapshot written, firecracker (pid ${pid}) terminated ` +
-      `[${(performance.now() - t0).toFixed(0)} ms]\n   check for yourself: pgrep firecracker → nothing\n`,
+      `[${ms.toFixed(0)} ms]\n   check for yourself: pgrep firecracker → nothing\n`,
   );
 }
 
@@ -135,6 +158,6 @@ async function waitForGuest(timeoutMs = 15000): Promise<void> {
       if (res.ok) return;
     } catch {}
     if (Date.now() > deadline) throw new Error("guest HTTP server never became ready");
-    await Bun.sleep(10);
+    await Bun.sleep(1);
   }
 }
