@@ -464,6 +464,18 @@ layout: cover
 
 # Demo
 
+<SlidevVideo autoplay autoreset="slide" muted playsinline aria-label="Terminal recording: cold boot, idle snapshot kills the firecracker process, resume restores memory in a fraction of the time with the request counter intact" class="dark:hidden h-90 mx-auto mt-4 rounded-lg shadow-lg">
+  <source src="/firecracker-demo-light.webm" type="video/webm" />
+</SlidevVideo>
+<SlidevVideo autoplay autoreset="slide" muted playsinline aria-label="Terminal recording: cold boot, idle snapshot kills the firecracker process, resume restores memory in a fraction of the time with the request counter intact" class="hidden dark:block h-90 mx-auto mt-4 rounded-lg shadow-lg">
+  <source src="/firecracker-demo-dark.webm" type="video/webm" />
+</SlidevVideo>
+
+<!--
+Recorded run of the demo. Re-record from demo/ with `vhs demo-light.tape` and `vhs demo-dark.tape` (shared steps live in demo-steps.tape).
+The arc: cold boot → warm request → idle snapshot kills the VM process → pgrep proves it's gone → resume from the memory snapshot 15× faster, counter and bootedAt intact.
+-->
+
 ---
 zoom: 0.8
 ---
@@ -561,3 +573,9 @@ The next request takes this path instead of the cold boot.
 [click] Same readiness poll as cold start but observed much faster.
 And this is why the counter kept counting and bootedAt never changed: the process didn't restart. Its memory came back from a file.
 -->
+
+---
+layout: cover
+---
+
+# That's a wrap
