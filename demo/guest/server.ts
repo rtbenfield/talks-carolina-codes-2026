@@ -17,7 +17,6 @@ Bun.serve({
       counter,
       bootedAt,
       pid: process.pid,
-      message: "Hello from inside a Firecracker microVM",
     });
   },
 });

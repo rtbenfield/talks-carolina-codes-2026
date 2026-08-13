@@ -30,7 +30,9 @@ export async function fcApi(method: string, path: string, body?: unknown): Promi
 /** Start a fresh Firecracker process and wait until its API socket answers. */
 export async function spawnFirecracker(): Promise<void> {
   rmSync(API_SOCK, { force: true });
-  fc = Bun.spawn(["firecracker", "--api-sock", API_SOCK], {
+  // --level Error silences Firecracker's own API-server log lines, which
+  // share stdout with the guest serial console we forward to the terminal.
+  fc = Bun.spawn(["firecracker", "--api-sock", API_SOCK, "--level", "Error"], {
     stdout: "pipe",
     stderr: "pipe",
   });
@@ -58,17 +60,27 @@ export async function killFirecracker(): Promise<void> {
 }
 
 /** Forward the guest's serial console to our terminal, line by line. */
-function pipeGuestConsole(stream: ReadableStream<Uint8Array>): void {
+function pipeGuestConsole(stream: ReadableStream<ArrayBufferView | ArrayBuffer>): void {
   (async () => {
-    const decoder = new TextDecoder();
-    let buffer = "";
-    for await (const chunk of stream) {
-      buffer += decoder.decode(chunk, { stream: true });
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
-      for (const line of lines) {
-        if (line.trim()) console.log(`  [guest] ${line}`);
-      }
+    const lines = stream.pipeThrough(new TextDecoderStream()).pipeThrough(splitLines());
+    for await (const line of lines) {
+      if (line.trim()) console.log(`  [guest] ${line}`);
     }
   })().catch(() => {});
+}
+
+/** Re-chunk a text stream on newlines, emitting one complete line at a time. */
+function splitLines(): TransformStream<string, string> {
+  let buffer = "";
+  return new TransformStream({
+    transform(chunk, controller) {
+      buffer += chunk;
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+      for (const line of lines) controller.enqueue(line);
+    },
+    flush(controller) {
+      if (buffer) controller.enqueue(buffer);
+    },
+  });
 }
