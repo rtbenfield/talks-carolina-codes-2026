@@ -9,8 +9,9 @@
       <span> <carbon:logo-bluesky /> rtbenfield.dev </span>
       <span> <carbon:logo-linkedin /> tylerbenfield </span>
 
-      <a href="https://tylerbenfield.dev/links" class="flex justify-center">
+      <a href="https://tylerbenfield.dev/links" class="flex flex-col items-center">
         <img alt="tylerbenfield.dev" class="w-50 rounded-lg" src="/qrcode_tylerbenfield.dev.png" />
+        <span class="mt-2">tylerbenfield.dev</span>
       </a>
     </section>
 

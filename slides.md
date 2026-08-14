@@ -79,16 +79,21 @@ layout: about-me
 <!---->
 
 ---
-layout: image-right
-<!--image: -->
+layout: two-cols
 ---
 
-# Agenda
+# The plan
 
 - Nostalgia
 - microVMs & unikerneles
 - Demo time
 - Takeaways
+
+::right::
+
+<div class="h-full flex items-center justify-center">
+  <img src="/qrcode_github.png" class="h-86 rounded-lg" />
+</div>
 
 ---
 layout: image
@@ -197,7 +202,7 @@ Bespoke deployment procedures with buildpacks
 
 #### Solved
 
-- ✅ simple `git push` deployment
+- ✅ `git push heroku main` and it's live
 - ✅ add-ons for database, monitoring, etc.
 
 </v-click>
@@ -459,6 +464,47 @@ No BIOS, no PCI bus, no legacy device emulation like QEMU carries.
 
 ---
 
+# microVM Networking · TAP & vsock
+
+
+```mermaid {scale: 0.7}
+flowchart LR
+  subgraph Guest["Guest VM"]
+    APP["App"]
+    NET["virtio-net"]
+  end
+  subgraph Host
+    TAP["TAP device"]
+    BR["bridge / NAT"]
+    AGENT["host agent process"]
+  end
+  NET <--> TAP
+  TAP <--> BR
+  BR <--> WAN["Internet / LAN"]
+  APP <-.->|vsock, CID-addressed| AGENT
+```
+
+<v-clicks>
+
+- TAP device - a normal Linux network interface per VM
+  - routable, filterable, rate-limitable like any NIC
+  - bridge/NAT gets the guest to the LAN and internet
+- vsock - a host-guest byte stream, not IP networking
+  - addressed by CID, no routing table
+  - terminates at one host process that sends/receives data
+
+</v-clicks>
+
+<!--
+Guest only sees virtio-net. Host side is TAP (same device as fairness/rate-limiting slide next).
+
+[click] TAP = full network citizen: routable, filterable, bridged/NATed out.
+
+[click] vsock = not IP. CID-addressed, host process only, no other-VM reach. Used by Firecracker's own in-guest agents.
+-->
+
+---
+
 # Firecracker added benefits
 
 But wait! There's more!
@@ -469,13 +515,10 @@ Firecracker actually has many properties needed by an orhcestrator
 
 - memory snapshot and restore
   - resume a VM with memory intact
-
 - resource oversubscription
   - selectively grant memory to overcommit a host
-
 - fairness and rate limiting
   - control VM network capacity and bandwidth
-
 - API driven lifecycle
   - orchestrate Firecracker over HTTP
 
@@ -492,7 +535,7 @@ Firecracker actually has many properties needed by an orhcestrator
 
 # Unikernels
 
-Cleaning out the junk drawer
+Cleaning out the syscall junk drawer
 
 A typical Linux kernel is general purpose.
 
@@ -554,7 +597,9 @@ Fewer layers isn't just tidier — every removed boundary is a removed context s
 
 # Serverless platforms
 
-The next generation of serverless platforms runs more than a function. It feels like a container but scales like a function.
+No longer limited to functions
+
+The next generation of serverless platforms runs more than a function.
 
 #### Applications with
 
@@ -573,6 +618,14 @@ layout: cover
 ---
 
 # Demo
+
+<img src="/qrcode_github.png" class="mx-auto h-48 rounded-lg" />
+
+<div class="text-center mt-4">
+
+[github.com/rtbenfield/talks-carolina-codes-2026](https://github.com/rtbenfield/talks-carolina-codes-2026)
+
+</div>
 
 ---
 zoom: 1
