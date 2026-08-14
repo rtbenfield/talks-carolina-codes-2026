@@ -13,11 +13,15 @@
 # in two terminals.
 
 Hide
-Type `tmux new-session -d -s fc-demo "PS1='> ' bash --norc"`
+Type `tmux new-session -d -s fc-demo "PS1='$ ' bash --norc"`
 Enter
 Type "tmux set -t fc-demo status off"
 Enter
-Type `tmux set -t fc-demo default-command "PS1='> ' bash --norc"`
+Type "tmux set -t fc-demo pane-border-status top"
+Enter
+Type `tmux set -t fc-demo pane-border-format " #{pane_current_command} "`
+Enter
+Type `tmux set -t fc-demo default-command "PS1='$ ' bash --norc"`
 Enter
 Type "tmux split-window -v -t fc-demo"
 Enter
@@ -42,9 +46,12 @@ Sleep 500ms
 Show
 
 # First request: no VM exists yet — full cold boot.
+# Keep this pause short: the pause plus the typing time of the next curl
+# must stay under the 5 s idle window, or the warm request races the
+# snapshot and shows "resume" instead.
 Type "curl -i -w '\n\n' localhost:8080"
 Enter
-Sleep 4s
+Sleep 3s
 
 # Second request: VM is already running — warm path, counter increments.
 Type "curl -i -w '\n\n' localhost:8080"
