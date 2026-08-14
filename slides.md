@@ -412,9 +412,11 @@ A microVM is a highly optimized VM that boots in milliseconds.
 </v-click>
 
 <!--
-- [click] Pros: minimal device model, no bootloader overhead, low memory footprint <5MiB, optimized for high density.
-- [click] Cons: no shared kernel, no standard image format, not as user-friendly as Docker, requires host virtualization support.
+[click] Pros: minimal device model, no bootloader overhead, low memory footprint <5MiB, optimized for high density.
 - high density is an important takeaway
+
+[click] Cons: no shared kernel, no standard image format, not as user-friendly as Docker, requires host virtualization support.
+
 - no shared kernel is a security feature
 - boots from fs images, so no image format is expected
 - several projects have used OCI images to package firecracker VMs
@@ -423,11 +425,45 @@ A microVM is a highly optimized VM that boots in milliseconds.
 
 ---
 
+# Anatomy of a Firecracker VM
+
+A handful of devices, wired together over one API socket
+
+```mermaid {scale: 0.7}
+flowchart LR
+    subgraph Host["Host process"]
+        API["API socket\n(unix, HTTP)"]
+        VMM["Firecracker VMM"]
+        API --> VMM
+    end
+
+    subgraph Guest["Guest VM"]
+        vCPU["vCPU(s)"]
+        MEM["Guest memory"]
+        BLK["Block device\n(rootfs image)"]
+        NET["virtio-net\n(tap device)"]
+        SER["Serial console"]
+    end
+
+    VMM --> vCPU
+    VMM --> MEM
+    VMM --> BLK
+    VMM --> NET
+    VMM --> SER
+```
+
+<!--
+Firecracker's device model is deliberately tiny: vCPUs, memory, a block device for the rootfs, a virtio-net device, and a serial console — all configured over one API socket before boot.
+No BIOS, no PCI bus, no legacy device emulation like QEMU carries.
+-->
+
+---
+
 # Firecracker added benefits
 
 But wait! There's more!
 
-Firecracker actually has many properties of a scheduler
+Firecracker actually has many properties needed by an orhcestrator
 
 <v-clicks>
 
@@ -479,6 +515,39 @@ What if it was built for your app?
 - Trim multi-process machinery.
 - Trim device drivers.
 - Trim the network stack.
+-->
+
+---
+
+# Unikernels ⸱ collapsing the stack
+
+Same hardware, one less boundary to cross
+
+```mermaid
+block-beta
+columns 2
+
+block:trad["Traditional VM"]
+  columns 1
+  tapp["App"]
+  tuser["Userspace: shell, package manager"]
+  tsys["Syscall boundary"]
+  tkern["Kernel: scheduler, drivers, network stack, multi-process"]
+  thw["Hardware / vCPU"]
+end
+
+block:uni["Unikernel VM"]
+  columns 1
+  uapp["App + only the libraries it links"]
+  uhw["Hardware / vCPU"]
+end
+```
+
+<!--
+Left: a traditional VM has an app running in userspace, crossing a syscall boundary into a general-purpose kernel to reach the hardware.
+
+Right: a unikernel links the app directly against just the libraries it needs into a single image, in a single address space, with no syscall boundary to cross.
+Fewer layers isn't just tidier — every removed boundary is a removed context switch.
 -->
 
 ---
