@@ -10,7 +10,7 @@
       <span> <carbon:logo-linkedin /> tylerbenfield </span>
 
       <a href="https://tylerbenfield.dev/links" class="flex justify-center">
-        <img alt="tylerbenfield.dev" class="w-50" src="/qrcode_tylerbenfield.dev.png" />
+        <img alt="tylerbenfield.dev" class="w-50 rounded-lg" src="/qrcode_tylerbenfield.dev.png" />
       </a>
     </section>
 

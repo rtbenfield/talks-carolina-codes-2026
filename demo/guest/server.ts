@@ -13,11 +13,7 @@ Bun.serve({
       return new Response("ok");
     }
     counter++;
-    return Response.json({
-      counter,
-      bootedAt,
-      pid: process.pid,
-    });
+    return Response.json({ counter, bootedAt, pid: process.pid });
   },
 });
 
