@@ -290,7 +290,7 @@ A microVM is a highly optimized VM that boots in milliseconds.
 
 A handful of devices, wired together over one API socket
 
-```mermaid {theme: 'base', scale: 0.7}
+```mermaid {theme: 'base', scale: 0.6}
 flowchart LR
     subgraph Host["Host process"]
         API["API socket\n(unix, HTTP)"]
