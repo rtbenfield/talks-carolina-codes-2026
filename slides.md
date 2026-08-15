@@ -29,6 +29,7 @@ The last comment block of each slide will be treated as slide notes. It will be 
 ---
 layout: quote
 clickAnimation: fade-in right
+hide: true
 ---
 
 # The serverless dilemma
@@ -56,6 +57,7 @@ the *tradeoff* is accepting **cold starts**, **limited control**, and **vendor l
 
 ---
 layout: two-cols-header
+hide: true
 ---
 
 # A fair trade
@@ -410,26 +412,42 @@ Firecracker actually has many properties needed by an orhcestrator
 -->
 
 ---
+layout: two-cols
+---
 
 # Unikernels
 
 Cleaning out the syscall junk drawer
 
-A typical Linux kernel is general purpose.
+A typical Linux kernel is general purpose
+
+Firecracker trims the distro modules but not the core
 
 <v-click>
 
-What if it was built for your app?
+...but what if it was built for your app?
 
-- 🗑️ scheduler
-- 🗑️ user/kernel boundary
-- 🗑️ multi-process machinery
-- 🗑️ device drivers
-- 🗑️ network stack
+🗑️ scheduler  
+🗑️ user/kernel boundary  
+🗑️ multi-process machinery  
+🗑️ device drivers  
+🗑️ network stack  
+
+</v-click>
+
+::right::
+
+<v-click>
+
+![](/fork_meme.jpg)
 
 </v-click>
 
 <!--
+Firecracker's kernel is already quite optimized
+- No PCI, ACPI, SCSI, USB, GPU, BIOS
+- Saves disk spaces and reduces startup time
+
 [click] What if it was built for your app?
 - Trim the scheduler.
 - Trim the user/kernel boundary.
