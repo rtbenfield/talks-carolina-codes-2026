@@ -434,7 +434,7 @@ A microVM is a highly optimized VM that boots in milliseconds.
 
 A handful of devices, wired together over one API socket
 
-```mermaid {scale: 0.7}
+```mermaid {theme: 'base', scale: 0.7}
 flowchart LR
     subgraph Host["Host process"]
         API["API socket\n(unix, HTTP)"]
@@ -467,7 +467,7 @@ No BIOS, no PCI bus, no legacy device emulation like QEMU carries.
 # microVM Networking · TAP & vsock
 
 
-```mermaid {scale: 0.7}
+```mermaid {theme: 'base', scale: 0.7}
 flowchart LR
   subgraph Guest["Guest VM"]
     APP["App"]
@@ -566,12 +566,13 @@ What if it was built for your app?
 
 Same hardware, one less boundary to cross
 
-```mermaid
+```mermaid {theme: 'base'}
 block-beta
 columns 2
 
-block:trad["Traditional VM"]
+block:trad
   columns 1
+  ttitle["Traditional VM"]
   tapp["App"]
   tuser["Userspace: shell, package manager"]
   tsys["Syscall boundary"]
@@ -579,11 +580,15 @@ block:trad["Traditional VM"]
   thw["Hardware / vCPU"]
 end
 
-block:uni["Unikernel VM"]
+block:uni
   columns 1
+  utitle["Unikernel VM"]
   uapp["App + only the libraries it links"]
   uhw["Hardware / vCPU"]
 end
+
+classDef blockTitle fill:transparent,stroke:none,color:#0b1120,font-weight:700;
+class ttitle,utitle blockTitle
 ```
 
 <!--
