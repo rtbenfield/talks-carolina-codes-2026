@@ -112,6 +112,8 @@ layout: two-cols
 
 # The plan
 
+What to expect
+
 - Nostalgia
 - microVMs & unikerneles
 - Demo time
