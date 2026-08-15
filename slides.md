@@ -23,7 +23,15 @@ layout: cover
 ## The Cloud’s Next Infrastructure Evolution
 
 <!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
+Thank you to Barry and the organizing team for making this incredible event happen.  
+I'm honored to part of it.
+
+Most difficult talk I've put together.  
+Complex topics with years of research and development.
+
+Takeaway a high level understanding.  
+Better knowledge of how infra providers work and trade-offs.  
+Better choiceof provider for your needs.
 -->
 
 ---
