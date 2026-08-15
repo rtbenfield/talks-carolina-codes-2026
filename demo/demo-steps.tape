@@ -33,10 +33,10 @@ Sleep 1s
 Show
 
 # Start the proxy in the top pane, in plain view.
-Sleep 1s
+Sleep 5s
 Type "bun run src/server.ts"
 Enter
-Sleep 3s
+Sleep 5s
 
 # Hop to the bottom pane for the client side.
 Hide
@@ -56,16 +56,16 @@ Sleep 3s
 # Second request: VM is already running — warm path, counter increments.
 Type "curl -i -w '\n\n' localhost:8080"
 Enter
-Sleep 2.5s
+Sleep 5s
 
 # Idle timeout (5 s): the proxy pauses the VM, writes a memory snapshot,
 # and kills the firecracker process. Wait for the 💤 log line.
-Sleep 6s
+Sleep 5s
 
 # Prove the VM process is really gone.
 Type "pgrep firecracker || echo -e 'no firecracker process — the VM is gone\n'"
 Enter
-Sleep 4s
+Sleep 5s
 
 # Third request: restored from the memory snapshot — same counter,
 # same bootedAt, a fraction of the cold-boot time. End before the next

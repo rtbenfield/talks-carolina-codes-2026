@@ -8,8 +8,6 @@ Set FontSize 24
 Set Width 1800
 Set Height 800
 Set Padding 24
-Set TypingSpeed 40ms
 Set Theme "3024 Day"
-Set WindowBar Colorful
 
 Source demo-steps.tape
