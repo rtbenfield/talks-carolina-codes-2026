@@ -444,30 +444,21 @@ What if it was built for your app?
 
 Same hardware, one less boundary to cross
 
-```mermaid {theme: 'base'}
-block-beta
-columns 2
-
-block:trad
-  columns 1
-  ttitle["Traditional VM"]
-  tapp["App"]
-  tuser["Userspace: shell, package manager"]
-  tsys["Syscall boundary"]
-  tkern["Kernel: scheduler, drivers, network stack, multi-process"]
-  thw["Hardware / vCPU"]
-end
-
-block:uni
-  columns 1
-  utitle["Unikernel VM"]
-  uapp["App + only the libraries it links"]
-  uhw["Hardware / vCPU"]
-end
-
-classDef blockTitle fill:transparent,stroke:none,color:#0b1120,font-weight:700;
-class ttitle,utitle blockTitle
-```
+<div class="stack-diagram">
+  <div class="stack-col">
+    <div class="stack-title">Traditional VM</div>
+    <div class="stack-layer">App</div>
+    <div class="stack-layer">Userspace: shell, package manager</div>
+    <div class="stack-layer">Syscall boundary</div>
+    <div class="stack-layer">Kernel: scheduler, drivers, network stack, multi-process</div>
+    <div class="stack-layer">Hardware / vCPU</div>
+  </div>
+  <div class="stack-col">
+    <div class="stack-title">Unikernel VM</div>
+    <div class="stack-layer">App + only the libraries it links</div>
+    <div class="stack-layer">Hardware / vCPU</div>
+  </div>
+</div>
 
 <!--
 Left: a traditional VM has an app running in userspace, crossing a syscall boundary into a general-purpose kernel to reach the hardware.
@@ -477,6 +468,8 @@ Fewer layers isn't just tidier — every removed boundary is a removed context s
 -->
 
 ---
+layout: two-cols-header
+---
 
 # Serverless platforms
 
@@ -484,17 +477,37 @@ No longer limited to functions
 
 The next generation of serverless platforms runs more than a function.
 
+::left::
+
+<v-click>
+
 #### Applications with
 
 - unrestricted runtimes
 - long-running memory
 - scale-to-zero and instantly resume
 
+</v-click>
+
+<v-click>
+
+***
+
 #### Databases with
 
 - no cold starts
 - usable cache
 - standby without dropping connections
+
+</v-click>
+
+::right::
+
+<v-click>
+
+![](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHE4MHJ4OWoxYXFldnVwZGl4aml2ZmRlOW5oamw1eDJkcWt4a3ZxMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZhESFK96NxbuO1yDgy/giphy.gif)
+
+</v-click>
 
 ---
 layout: cover
@@ -532,6 +545,8 @@ Notice there's no special behavior.
 ---
 
 # A working orchestrator
+
+An HTTP proxy that routes to a scale-to-zero Firecracker microVM
 
 <SlidevVideo autoplay autoreset="slide" muted playsinline aria-label="Terminal recording: cold boot, idle snapshot kills the firecracker process, resume restores memory in a fraction of the time with the request counter intact" class="dark:hidden h-90 mx-auto mt-4 rounded-lg shadow-lg">
   <source src="/firecracker-demo-light.webm" type="video/webm" />
