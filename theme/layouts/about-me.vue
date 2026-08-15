@@ -3,7 +3,11 @@
     <section class="h-full flex justify-center flex-col">
       <h1 class="text-2xl">Tyler Benfield</h1>
 
-      <h3>Platform Architect @ Prisma</h3>
+      <h3 class="flex items-center gap-2">
+        Platform Architect @
+        <img alt="Prisma" class="h-5 dark:hidden" src="/prisma-light.svg" />
+        <img alt="Prisma" class="h-5 hidden dark:block" src="/prisma-dark.svg" />
+      </h3>
 
       <span> <carbon:logo-x /> rtbenfield </span>
       <span> <carbon:logo-bluesky /> rtbenfield.dev </span>

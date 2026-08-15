@@ -31,6 +31,8 @@ layout: quote
 clickAnimation: fade-in right
 ---
 
+# The serverless dilemma
+
 <div class="text-3xl">
 
 <v-click>
@@ -56,27 +58,43 @@ the *tradeoff* is accepting **cold starts**, **limited control**, and **vendor l
 layout: two-cols-header
 ---
 
-# A worthy exchange
+# A fair trade
 
-It's generally been worth it
+Serverless has generally been worth it
 
 ::left::
 
+#### Benefits
+
 - Better DX
-- Autoscaling
-- Reduced operations
+- Reduced infra management
+- Handles traffic spikes
 - Usage pricing
 - Scale-to-zero
 
 ::right::
 
-- Point
+#### Drawbacks
+
+- Vendor lock-in
+- Restrictive runtimes
+- Limited control
+- Cold start penalties
+
+<!--
+It depends on the application  
+Some apps see more benefits, others aren't suitable
+-->
 
 ---
 layout: about-me
 ---
 
-<!---->
+<!--
+Prisma hosts applications and databases using microVMs  
+We operate the bare metal machines and orchestration services to do so  
+This gives us better performance, more ownership of our uptime, and cost savings
+-->
 
 ---
 layout: two-cols
