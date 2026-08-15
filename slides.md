@@ -121,270 +121,108 @@ image: https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGEzczNsc3k0YzJuOHc1a3N
 # History
 
 ---
-layout: two-cols-header
----
 
-# History ⸱ Manual deployments
+# History ⸱ servers to orchestration
 
-Pepperidge Farm remembers
+<div class="flex flex-col gap-5 mt-8">
+<v-clicks>
 
-Manually copy files to a server with scp, rsync, and ftp
+<div class="flex items-start gap-5 border-l-2 pl-5" style="border-color: var(--brand-blue)">
+  <div class="text-sm font-600 opacity-60 w-32 shrink-0 pt-0.5">Manual</div>
+  <div>
+    <div><strong>scp / rsync / ftp</strong> straight to the server</div>
+    <div class="opacity-70">simple on the surface, no repeatability, no rollback</div>
+  </div>
+</div>
 
-::left::
+<div class="flex items-start gap-5 border-l-2 pl-5" style="border-color: var(--brand-blue)">
+  <div class="text-sm font-600 opacity-60 w-32 shrink-0 pt-0.5">2005 ⸱ VMs</div>
+  <div>
+    <div>Isolate workloads with VMs and template deployments</div>
+    <div class="opacity-70">isolation and multi-tenancy, but slow boots and manual orchestration</div>
+  </div>
+</div>
 
-<v-click>
+<div class="flex items-start gap-5 border-l-2 pl-5" style="border-color: var(--brand-blue)">
+  <div class="text-sm font-600 opacity-60 w-32 shrink-0 pt-0.5">2009 ⸱ Heroku</div>
+  <div>
+    <div><code>git push heroku main</code> and it's live</div>
+    <div class="opacity-70">the first pass at PaaS, but no portability and premium pricing</div>
+  </div>
+</div>
 
-#### Solved
-
-- ✅ simple... on the surface
-
-</v-click>
-
-::right::
-
-<v-click>
-
-#### Plagued by
-
-- ❌ no repeatability
-- ❌ no isolation
-- ❌ no rollback
-- ❌ sequencing challenges
-
-</v-click>
-
-<v-click>
-
-WAIT! Why doesn't this file match?!
-
-</v-click>
+</v-clicks>
+</div>
 
 <!--
-- [click] Solved: simple, on the surface — mostly script files like PHP and ASP.
-- [click] Plagued by: no repeatability, no isolation, no rollback, sequencing challenges — conflicting changes and overwriting work.
-- [click] WAIT! Why doesn't this file match?!
+- [click] Manual: simple on the surface, but plagued by no repeatability, no isolation, no rollback, sequencing challenges.
+- [click] VMs (2005): solved isolation and multi-tenancy, some repeatability; plagued by resource overhead, slow boot times, manual orchestration.
+- [click] Heroku (2009): solved simple git-push deploys and add-ons; plagued by no portability, limited runtime, pricing. Ahead of its time — Docker brought portable competition, lack of investment led to its demise.
+-->
+
+---
+
+# History ⸱ the cloud-native era
+
+<div class="flex flex-col gap-5 mt-8">
+<v-clicks>
+
+<div class="flex items-start gap-5 border-l-2 pl-5" style="border-color: var(--brand-blue)">
+  <div class="text-sm font-600 opacity-60 w-32 shrink-0 pt-0.5">2013 ⸱ Containers + k8s</div>
+  <div>
+    <div>Repeatable deployment units that run anywhere</div>
+    <div class="opacity-70">density and portability, but YAML sprawl and full-time cluster ops</div>
+  </div>
+</div>
+
+<div class="flex items-start gap-5 border-l-2 pl-5" style="border-color: var(--brand-blue)">
+  <div class="text-sm font-600 opacity-60 w-32 shrink-0 pt-0.5">2015 ⸱ FaaS</div>
+  <div>
+    <div>Deploy code, not infra</div>
+    <div class="opacity-70">scale-to-zero simplicity, but cold starts, stateless, and vendor lock-in</div>
+  </div>
+</div>
+
+<div class="flex items-start gap-5 border-l-2 pl-5" style="border-color: var(--brand-blue)">
+  <div class="text-sm font-600 opacity-60 w-32 shrink-0 pt-0.5">2018 ⸱ PaaS</div>
+  <div>
+    <div>Intelligent deployments at a premium</div>
+    <div class="opacity-70">modern DX, but still cold starts, lock-in, and abstraction layers</div>
+  </div>
+</div>
+
+</v-clicks>
+</div>
+
+<!--
+- [click] Containers + k8s (2013): solved density, portability, declarative deployment; plagued by YAML sprawl, full-time cluster ops, weakened isolation. First major step outside bespoke platforms — locally runnable, vendor portable, still dominant.
+- [click] FaaS (2015): solved simple operation and scale-to-zero; plagued by cold starts, statelessness, vendor lock-in, runtime constraints. Traded too much for too little, but sparked the serverless category.
+- [click] PaaS (2018): solved modernized deployments and dev focus; plagued by cold starts, vendor lock-in, abstraction layers, premium price. Heroku resurgence without Heroku — typically reselling a hyperscaler on k8s or lambda.
 -->
 
 ---
 layout: two-cols-header
----
-
-# History ⸱ 2005 ⸱ VMs
-
-You gotta keep'em separated
-
-Isolate workloads with VMs and template deployments
-
-::left::
-
-<v-click>
-
-#### Solved
-
-- ✅ isolation
-- ✅ multi-tenancy
-- 〰️ some repeatability
-
-</v-click>
-
-::right::
-
-<v-click>
-
-#### Plagued by
-
-- ❌ resource overhead
-- ❌ slow boot times
-- ❌ manual orchestration
-
-</v-click>
-
-<!--
-- [click] Solved: isolation, multi-tenancy, some repeatability.
-- [click] Plagued by: resource overhead, slow boot times, manual orchestration.
--->
-
----
-layout: two-cols-header
----
-
-# History ⸱ 2009 ⸱  Heroku
-
-The first pass at PaaS
-
-Bespoke deployment procedures with buildpacks
-
-::left::
-
-<v-click>
-
-#### Solved
-
-- ✅ `git push heroku main` and it's live
-- ✅ add-ons for database, monitoring, etc.
-
-</v-click>
-
-::right::
-
-<v-click>
-
-#### Plagued by
-
-- ❌ no portability
-- ❌ limited runtime
-- ❌ pricing
-
-</v-click>
-
-<!--
-- [click] Solved: simple git push deployment, add-ons for database, monitoring, etc.
-- [click] Plagued by: no portability, limited runtime, pricing.
-- Heroku was ahead of its time
-- Docker introduced portable competition
-- Lack of investment led to demise
-- Looks like modern PaaS providers
--->
-
----
-layout: two-cols-header
----
-
-# History ⸱ 2013 ⸱  Containers + k8s
-
-The era of whales
-
-Repeatable deployment units that run anywhere
-
-::left::
-
-<v-click>
-
-#### Solved
-
-- ✅ density
-- ✅ portability
-- ✅ declarative deployment
-- 〰️ some isolation
-
-</v-click>
-
-::right::
-
-<v-click>
-
-#### Plagued by
-
-- ❌ YAML sprawl
-- ❌ full-time cluster ops
-- ❌ weakened isolation
-
-</v-click>
-
-<!--
-- [click] Solved: density, portability, declarative deployment, some isolation.
-- [click] Plagued by: YAML sprawl, full-time cluster ops, weakened isolation.
-- First major step to improve deployments outside bespoke platforms
-- Locally runnable
-- Vendor portable
-- Still a dominant deployment model
--->
-
----
-layout: two-cols-header
----
-
-# History ⸱ 2015 ⸱ FaaS (function-as-a-service)
-
-Two steps backward, one step forward
-
-Deploy code, not infra
-
-::left::
-
-<v-click>
-
-#### Solved
-
-- ✅ simple operation
-- ✅ scale-to-zero
-
-</v-click>
-
-::right::
-
-<v-click>
-
-#### Plagued by
-
-- ❌ cold starts
-- ❌ stateless
-- ❌ vendor lock-in
-- ❌ runtime constraints
-
-</v-click>
-
-<!--
-- [click] Solved: simple operation, scale-to-zero.
-- [click] Plagued by: cold starts, stateless, vendor lock-in, runtime constraints.
-- Traded too much for too little, but gained attention
-- Sparked a new category of serverless
--->
-
----
-layout: two-cols-header
----
-
-# History ⸱ 2018 ⸱ PaaS (platform-as-a-service)
-
-No shortage of opinions
-
-Intelligent deployments at a premium
-
-::left::
-
-<v-click>
-
-#### Solved
-
-- ✅ modernized deployments
-- ✅ build + deploy optimizations
-- ✅ focus on app developers
-
-</v-click>
-
-::right::
-
-<v-click>
-
-#### Plagued by
-
-- ❌ cold starts
-- ❌ vendor lock-in
-- ❌ abstraction layers
-- ❌ premium price
-
-</v-click>
-
-<!--
-- [click] Solved: modernized deployments, build + deploy optimizations, focus on app developers.
-- [click] Plagued by: cold starts, vendor lock-in, abstraction layers, premium price.
-- Heroku resurgence without Heroku
-- Typically reselling a hyperscaler, running on k8s or lambda
-- Iteration and variations plenty
-- Bespoke solutions like V8 isolates
-- Remained in this category since
--->
-
 ---
 
 # Reflections
 
 Do you know where your applications are?
 
+::left::
+
+<div class="text-2xl">
+
 Your infrastructure probably sits in one of these categories.
 
 You inherit the trade-offs of that category.
+
+</div>
+
+::right::
+
+<div class="h-full flex items-center justify-center">
+  <img src="/where_meme.jpg" class="h-86 rounded-lg" />
+</div>
 
 <!--
 - Trade-offs are fine
@@ -476,14 +314,23 @@ flowchart LR
 ```
 
 <!--
-Firecracker's device model is deliberately tiny: vCPUs, memory, a block device for the rootfs, a virtio-net device, and a serial console — all configured over one API socket before boot.
-No BIOS, no PCI bus, no legacy device emulation like QEMU carries.
+Device model is deliberately tiny.  
+vCPUs  
+Memory   
+Block device — rootfs image  
+virtio-net — virtual NIC  
+Serial console — just enough for boot/debug output.  
+One API socket configures all of it before boot — single control plane.  
+No BIOS — skips POST and boot firmware entirely.  
+No PCI bus — devices are fixed MMIO, nothing to discover.  
+No legacy device emulation — unlike QEMU's floppy/VGA/sound baggage.
 -->
 
 ---
 
 # microVM Networking · TAP & vsock
 
+Two communication channels for all your networking needs
 
 ```mermaid {theme: 'base', scale: 0.7}
 flowchart LR
@@ -514,11 +361,11 @@ flowchart LR
 </v-clicks>
 
 <!--
-Guest only sees virtio-net. Host side is TAP (same device as fairness/rate-limiting slide next).
+Guest only sees virtio-net. Host side is TAP.
 
-[click] TAP = full network citizen: routable, filterable, bridged/NATed out.
+[click] TAP = device-level primitive that plugs into the normal TCP/IP stack
 
-[click] vsock = not IP. CID-addressed, host process only, no other-VM reach. Used by Firecracker's own in-guest agents.
+[click] vsock = socket-level primitive that relays bytes without the need for a network stack
 -->
 
 ---
