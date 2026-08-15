@@ -114,11 +114,17 @@ layout: two-cols
 </div>
 
 ---
-layout: image
-image: https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGEzczNsc3k0YzJuOHc1a3NtZmd5dXZvanRmaWhwbWZ1cGVnaGRndSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wR4bJk4jF5Tl6/giphy.gif
+layout: cover
 ---
 
 # History
+
+What have we tried and where are we now?
+
+---
+layout: image
+image: https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGEzczNsc3k0YzJuOHc1a3NtZmd5dXZvanRmaWhwbWZ1cGVnaGRndSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wR4bJk4jF5Tl6/giphy.gif
+---
 
 ---
 
@@ -235,6 +241,13 @@ layout: cover
 ---
 
 # microVMs & unikernels
+
+Where we are headed
+
+---
+layout: image
+image: https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYW56a3N6ZXhkcTZ6NGVudGk2MzFjY3ZsZDI1azJ0anJ4aWV3cDYwNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/118u58QrLaLnDG/giphy.gif
+---
 
 ---
 layout: two-cols-header
